@@ -66,14 +66,14 @@
             >;
         };
 
-        raise_layer {
+        symbols {
             // -----------------------------------------------------------------------------------------
             // |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
             // | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
             // | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
-            display-name = "Raise";
+            display-name = "sym<->num";
             bindings = <
 &trans  &kp DOLLAR     &kp LEFT_PARENTHESIS  &kp HASH      &kp RIGHT_PARENTHESIS  &kp EXCLAMATION    &kp AT        &kp N7        &kp N8        &kp N9        &kp MINUS   &trans
 &trans  &kp AMPERSAND  &kp LEFT_BRACE        &kp CARET     &kp RIGHT_BRACE        &kp TILDE          &kp ASTERISK  &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp PLUS    &trans
