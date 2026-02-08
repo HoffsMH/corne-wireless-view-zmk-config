@@ -34,7 +34,7 @@
     keymap {
         compatible = "zmk,keymap";
 
-        Main {
+        main {
             // -----------------------------------------------------------------------------------------
             // |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
             // | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
@@ -59,10 +59,10 @@
 
             display-name = "mac";
             bindings = <
-&trans  &trans  &trans  &trans    &trans  &trans       &trans    &kp N7    &kp N8    &kp N9     &kp N0  &kp BSPC
-&trans  &trans  &trans  &trans    &trans  &trans       &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &trans  &trans
-&trans  &trans  &trans  &trans    &trans  &trans       &trans    &trans    &trans    &trans     &trans  &trans
-                        &kp LGUI  &trans  &kp SPACE    &kp RET   &trans    &kp RALT
+&trans  &trans  &trans  &trans                 &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
+&trans  &trans  &trans  &trans                 &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
+&trans  &trans  &trans  &faster_mt LEFT_ALT C  &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
+                        &trans                 &kp LEFT_COMMAND  &trans    &trans  &trans  &faster_mt RG(LC(LA(RIGHT_COMMAND))) EQUAL
             >;
         };
 
