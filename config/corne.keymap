@@ -81,5 +81,23 @@
                                              &trans        &mkp MB3               &mkp MB1           &trans        &trans        &trans
             >;
         };
+
+        arrows {
+            bindings = <
+&trans  &none   &none   &none   &none               &none     &none           &kp LCMD        &none         &none            &none  &trans
+&trans  &trans  &trans  &trans  &trans              &trans    &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none  &trans
+&trans  &trans  &trans  &trans  &trans              &trans    &kp F5          &kp F6          &kp F7        &kp F8           &none  &trans
+                        &trans  &kp LA(LEFT_SHIFT)  &mo 4     &trans          &trans          &trans
+            >;
+        };
+
+        layer_4 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans    &trans  &trans  &trans
+            >;
+        };
     };
 };
