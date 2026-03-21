@@ -86,10 +86,10 @@
 
             display-name = "mac";
             bindings = <
-&trans  &trans  &trans  &trans                 &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
-&trans  &trans  &trans  &trans                 &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
-&trans  &trans  &trans  &faster_mt LEFT_ALT C  &trans            &trans    &trans  &trans  &trans                                      &trans  &trans  &trans
-                        &trans                 &kp LEFT_COMMAND  &trans    &trans  &trans  &faster_mt RG(LC(LA(RIGHT_COMMAND))) EQUAL
+&trans  &trans  &trans  &trans          &trans            &trans    &trans  &trans  &trans                               &trans  &trans  &trans
+&trans  &trans  &trans  &trans          &trans            &trans    &trans  &trans  &trans                               &trans  &trans  &trans
+&trans  &trans  &trans  &am LEFT_ALT C  &trans            &trans    &trans  &trans  &trans                               &trans  &trans  &trans
+                        &trans          &kp LEFT_COMMAND  &trans    &trans  &trans  &am RG(LC(LA(RIGHT_COMMAND))) EQUAL
             >;
         };
 
