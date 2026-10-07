@@ -89,6 +89,51 @@ class ZmkCodes:
         return [page or KEYBOARD_PAGE, usage, mods]
 
 
+MOD_NAMES = [(1, "ctrl"), (2, "shift"), (4, "alt"), (8, "cmd"),
+             (16, "rctrl"), (32, "rshift"), (64, "ralt"), (128, "rcmd")]
+SHORT = {
+    "LEFT_ARROW": "←", "LEFT": "←", "RIGHT_ARROW": "→", "RIGHT": "→",
+    "UP_ARROW": "↑", "UP": "↑", "DOWN_ARROW": "↓", "DOWN": "↓",
+    "BSPC": "bksp", "BACKSPACE": "bksp", "DEL": "del", "DELETE": "del",
+    "RET": "enter", "RETURN": "enter", "ENTER": "enter", "SPACE": "space",
+    "ESC": "esc", "ESCAPE": "esc", "TAB": "tab", "CAPS": "caps", "CAPSLOCK": "caps",
+    "HOME": "home", "END": "end", "PG_UP": "pgup", "PAGE_UP": "pgup",
+    "PG_DN": "pgdn", "PAGE_DOWN": "pgdn", "INS": "ins", "INSERT": "ins",
+    "PSCRN": "prtsc", "PRINTSCREEN": "prtsc",
+    "C_VOLUME_UP": "vol+", "C_VOL_UP": "vol+", "C_VOLUME_DOWN": "vol-", "C_VOL_DN": "vol-",
+    "C_MUTE": "mute", "C_NEXT": "next", "C_PREV": "prev", "C_PREVIOUS": "prev",
+    "C_PLAY_PAUSE": "play", "C_PP": "play", "C_BRI_UP": "bri+", "C_BRI_DN": "bri-",
+}
+MOUSE = {"MB1": "click", "LCLK": "click", "MB2": "rclick", "RCLK": "rclick",
+         "MB3": "mclick", "MCLK": "mclick", "MB4": "back", "MB5": "fwd"}
+
+
+def mod_names(bits):
+    return "+".join(name for bit, name in MOD_NAMES if bits & bit)
+
+
+def short_label(name, codes):
+    """Readable legend for a ZMK keycode name, or None to keep keymap-drawer's."""
+    if re.fullmatch(r"\w+\(.*\)", name):
+        core = name
+        while m := re.fullmatch(r"\w+\((.*)\)", core):
+            core = m.group(1)
+        code, core_code = codes.encode(name), codes.encode(core)
+        if not code:
+            return None
+        if core_code and modifier_bits(core_code):
+            return mod_names(modifier_bits(code))
+        return mod_names(code[2]) + "+" + (short_label(core, codes) or core.lower())
+    if name in SHORT:
+        return SHORT[name]
+    code = codes.encode(name)
+    if code and modifier_bits(code):
+        return mod_names(modifier_bits(code))
+    if code and code[1] and re.fullmatch(r"F\d+", name):
+        return name
+    return None
+
+
 def modifier_bits(out):
     """Bits a modifier-only key holds: LEFT_SHIFT -> 0x02, LA(LSHIFT) -> 0x06."""
     page, usage, mods = out
@@ -111,6 +156,7 @@ class Analyzer:
         name, args = parts[0], parts[1:]
         p = self.p
         if name == "&kp" and args:
+            info["label"] = short_label(args[0], self.codes)
             code = self.codes.encode(args[0])
             if code:
                 bits = modifier_bits(code)
@@ -127,6 +173,12 @@ class Analyzer:
             info["out"] = tap["out"]
             info["mod"] = hold["mod"] or hold_mods_from_out(hold)
             info["layer"] = hold["layer"]
+            info["label"] = tap.get("label")
+            info["hold_label"] = hold.get("label")
+        elif name == "&bt" and args:
+            info["label"] = " ".join(args).replace("BT_SEL", "bt").replace("BT_CLR", "bt clr").lower()
+        elif name == "&mkp" and args:
+            info["label"] = MOUSE.get(args[0])
         elif name in p.mod_morphs:
             for b in p.mod_morphs[name]:
                 info["out"] += self.analyze(b, depth + 1)["out"]
@@ -175,6 +227,13 @@ def export(keymap_path, zmk_keyboard=None):
                 entry = {"trans": True}
             else:
                 info = analyzer.analyze(binding)
+                # Prefer our short legends over keymap-drawer's long names.
+                if label := info.pop("label", None):
+                    entry["tap"] = label
+                if hold_label := info.pop("hold_label", None):
+                    entry["hold"] = hold_label
+                elif binding.startswith("&bt"):
+                    entry["hold"] = ""
                 entry.update({k2: v for k2, v in info.items() if v not in (None, 0, [])})
             out_keys.append(entry)
         layers.append({"name": lname, "keys": out_keys})
