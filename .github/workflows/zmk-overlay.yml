@@ -1,0 +1,32 @@
+# Installed by `zmk-overlay sync`. Exports each keymap for the zmk-overlay
+# Omarchy plugin and commits it to zmk-overlay/<keymap>.json.
+name: zmk-overlay export
+on:
+  push:
+    paths: ["config/*.keymap", ".github/workflows/zmk-overlay.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: HoffsMH/zmk-overlay
+          path: .zmk-overlay
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install keymap-drawer
+      - run: |
+          mkdir -p zmk-overlay
+          for k in config/*.keymap; do
+            python .zmk-overlay/export.py "$k" -o "zmk-overlay/$(basename "$k" .keymap).json"
+          done
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add zmk-overlay
+          git diff --cached --quiet || { git commit -m "zmk-overlay: export keymap" && git push; }
