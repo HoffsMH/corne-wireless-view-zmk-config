@@ -3,9 +3,6 @@ manifest:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
   projects:
-    - name: zmk-overlay
-      url: https://github.com/HoffsMH/zmk-overlay
-      revision: main
     - name: zmk
       remote: zmkfirmware
       revision: v0.3

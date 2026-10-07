@@ -1,0 +1,11 @@
+config ZMK_LAYER_SIGNAL
+    bool "Report active layers to the host as F13-F24 taps"
+    help
+      On every layer change, tap F24 together with F13+n for each active
+      layer index n (0-10). The zmk-overlay Omarchy plugin decodes these from
+      raw HID; its Hyprland binds keep them away from applications.
+
+config ZMK_LAYER_SIGNAL_TAP_MS
+    int "How long the signal keys are held"
+    default 10
+    depends on ZMK_LAYER_SIGNAL

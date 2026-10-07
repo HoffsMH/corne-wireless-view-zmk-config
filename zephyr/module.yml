@@ -1,0 +1,3 @@
+build:
+  cmake: zmk-overlay/module
+  kconfig: zmk-overlay/module/Kconfig
